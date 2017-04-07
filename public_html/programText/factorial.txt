@@ -1,0 +1,65 @@
+/*
+-------------------
+PROGRAM EXPLANATION
+-------------------
+
+
+This mostly shows some basic recursion.
+
+
+*/
+
+
+
+
+
+
+// cs1410 project6.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <string>
+#include <iostream>
+
+using namespace std;
+
+long factorial(long fac)
+{
+	long num1 = fac;
+	long sum;
+	if (num1 == 1)
+	{
+		sum =1;
+	}
+	else
+	{
+		sum = factorial(num1 - 1) * num1;
+	}
+	return sum;
+
+}
+
+void getUserInput()
+{
+	for (;;)
+	{
+		string inputString;
+		cout << endl << "Please enter an integar to be factorialized" << endl;
+
+		cin >> inputString;
+
+		cout << factorial(stoi(inputString));
+
+	}
+
+}
+
+int main()
+{
+	getUserInput();
+
+	system("pause");
+
+    return 0;
+}
+

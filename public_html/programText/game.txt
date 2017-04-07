@@ -1,0 +1,208 @@
+
+#include "stdafx.h"
+#include <iostream>
+#include <string>
+
+
+
+struct pointCounter
+{
+	int perfect = 0;
+	int close = 0;
+};
+
+class gameObject
+{
+public:
+	gameObject();
+	void setUserInput();
+	std::string getUserInput();
+	void repeat();
+	bool playAgain();
+	bool getproceed();
+	void endGame();
+	void submitGuess(std::string);
+	void resetGame();
+	void checkWin();
+	void clearCounter();
+
+private:
+	std::string hiddenWordArray[6] = { "ant", "apple", "hello", "dog", "cat", "ape" };
+	std::string hiddenWord = hiddenWordArray[0];
+	int hiddenWordCounter = 0;
+
+	std::string prompt = "please enter a word";
+	std::string userInput;
+
+	const int repeatAmount = 15;
+	const long delayTime = 10000000;
+	bool proceed = true;
+	int turnCounter = 0;
+	pointCounter myPointCounter;
+};
+
+
+
+gameObject::gameObject()
+{
+	std::string userInput = "";
+}
+
+void gameObject::setUserInput()
+{
+
+	std::cout << "Can you guess the " << hiddenWord.length() << " letter word I'm thinking of?" << std::endl;
+	std::getline(std::cin, this->userInput);
+
+}
+
+std::string gameObject::getUserInput()
+{
+	return this->userInput;
+}
+
+void gameObject::repeat()
+{
+
+	std::cout << std::endl << "Welcome to Matthew's Word Game" << std::endl;
+	while (turnCounter < repeatAmount)
+	{
+		this->setUserInput();
+		submitGuess(userInput);
+
+		//print points
+		std::cout << "close: " << myPointCounter.close << std::endl;
+		std::cout << "perfect: " << myPointCounter.perfect << std::endl;
+		std::cout << "guesses left: " << repeatAmount - turnCounter << std::endl << std::endl;
+		checkWin();
+		clearCounter();
+	}
+
+	playAgain();
+}
+
+bool gameObject::playAgain()
+{
+	std::cout << "Would you like to play again? \n y or n?" << std::endl;
+	std::string answer = "";
+	getline(std::cin, answer);
+	if (answer[0] == 'y')
+	{
+		resetGame();
+		repeat();
+	}
+	else
+	{
+		endGame();
+	}
+	return false;
+
+}
+
+bool gameObject::getproceed()
+{
+	return this->proceed;
+}
+
+void gameObject::endGame()
+{
+	std::cout << "Game Over";
+	for (int i = 0; i < delayTime; i++)
+	{
+
+	}
+	exit(0);
+}
+
+void gameObject::submitGuess(std::string)
+{
+	//increment turn number
+	turnCounter++;
+	int checkWordLength;
+
+	//setup return variable
+
+	//loop through all letters in guess
+	if (hiddenWord.length() > userInput.length())
+	{
+		checkWordLength = userInput.length();
+	}
+	else
+	{
+		checkWordLength = hiddenWord.length();
+	}
+	int hiddenWordLength = checkWordLength;
+	for (int HDWchar = 0; HDWchar < hiddenWordLength; HDWchar++)
+	{
+		for (int GUSchar = 0; GUSchar < hiddenWordLength; GUSchar++)
+		{
+			if (hiddenWord[HDWchar] == userInput[GUSchar])
+			{
+				{
+					if (HDWchar == GUSchar)
+					{
+						myPointCounter.perfect++;
+					}
+					else
+					{
+						myPointCounter.close++;
+					}
+				}
+
+			}
+
+		}
+
+	}
+	//compare letters against hidden word
+
+}
+
+
+void gameObject::resetGame()
+{
+	if (hiddenWordCounter == 6)
+	{
+		std::cout << std::endl << "You have ran out of words. As such, we recycle through our dictionary." << std::endl << std::endl;
+		hiddenWordCounter = 0;
+	}
+	turnCounter = 0;
+	myPointCounter.close = 0;
+	myPointCounter.perfect = 0;
+	hiddenWordCounter++;
+	hiddenWord = hiddenWordArray[hiddenWordCounter];
+
+}
+
+void gameObject::checkWin()
+{
+	if ((myPointCounter.perfect == hiddenWord.length()))
+	{
+		std::cout << "You have won!" << std::endl << std::endl;
+		playAgain();
+	}
+}
+
+void gameObject::clearCounter()
+{
+	myPointCounter.close = 0;
+	myPointCounter.perfect = 0;
+
+}
+
+
+
+int main()
+{
+	gameObject myGame;
+
+
+	myGame.repeat();
+
+
+
+
+
+	system("pause");
+	return 0;
+}

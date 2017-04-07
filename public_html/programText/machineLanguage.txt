@@ -1,0 +1,445 @@
+;-------------------
+;PROGRAM EXPLANATION
+;-------------------
+;This program has the user enter in two number up to 9999 and chose a operation.
+;The program then turns those string inputs into integers, does the calculation, 
+;converts result back into a string, and displays the result to the user.
+
+
+
+
+
+.orig x3000
+
+;prep for first jump
+
+add r0,r0,x0
+brnzp begin1
+
+promptBegin	.stringz "\nWould you like to add(+), subtract(-), or multiply(*)"
+promptStore1	.stringz "\nPlease type in first number "
+promptStore2	.stringz "\nPlease type in second number "
+prePrompt	.stringz "Please make sure inputs and outputs are between -1 and 10000"
+ASCIITOINT	.FILL #-48
+INTTOASCII	.FILL #48
+changevalue	.FILL #-1999
+
+inputString1	.blkw #20
+	.fill #0
+inputString2	.blkw #20
+	.fill #0
+inputInt1	.blkw #1
+	.fill #0
+inputInt2	.blkw #1
+	.fill #0
+resultInt	.blkw #1
+resultString	.blkw #5
+spaces	.stringz "\n"
+
+
+add r0,r0,x0
+brnzp begin1
+
+
+userFunction	.blkw #1
+
+
+;----------------------------------------
+;Set up user display and preset registers
+;-----------------------------------------
+
+
+begin1
+	lea r0, prePrompt
+	puts
+	lea r0 ,promptBegin ;
+	puts
+	and r0,r0,x0
+	getc
+	out
+	st r0, userFunction
+	add r1,r0,x0
+	add r0,r1,r2
+	brz prepToStore1
+
+
+
+
+
+;----------------------------------------
+;Store user input
+;-----------------------------------------
+
+	
+	
+prepToStore1
+	lea r5, promptStore1
+	lea r6, inputString1
+	AND r4,r4,x0
+	brnzp storeNumber1
+	
+prepToStore2
+	lea r5, promptStore2
+	lea r6, inputString2
+	add r4,r4,#1
+	brnzp storeNumber1
+
+storeNumber1
+	add r0,r5,x0 ;
+	puts
+	add r3,r6,x0
+loop1
+	getc
+	out
+	add r1,r0,x0
+	add r0 r0 -10
+	brz check1
+	str r1 r3 #0
+
+
+	add r3,r3,#1
+	brnzp loop1 
+check1
+	add r0,r4,x0
+	brz print1
+	brnzp printFinal1
+
+print1
+
+	add r0 r6,x0
+	;puts
+	lea r0, spaces
+	;puts
+	add r0,r4,x0
+	brz prepToStore2
+	brnzp printFinal1
+
+printFinal1
+
+	add r0 r6,x0
+	;puts
+	lea r0, spaces
+	;puts
+
+
+
+
+
+
+and r0,r1,x0
+and r1,r1,x0
+and r2,r1,x0
+and r3,r1,x0
+and r4,r1,x0
+and r5,r1,x0
+and r6,r1,x0
+and r7,r1,x0
+
+
+
+;----------------------------------------
+;Convert first input into integar
+;-----------------------------------------
+	
+	LD r5,ASCIITOINT
+	LD r6, INTTOASCII
+
+	and r7,r7,x0
+	add r7,r7,#10
+
+	and r2,r2,x0 ;empty out r1 and r2
+	and r1,r1,x0 ;empty out r1 and r2
+	lea r4,inputString1 ;getFirstValue
+restart2
+	ldr r3,r4,x0
+	brz theend2
+	add r4,r4,#1	
+	brnzp multiply2
+
+continue2
+	
+	add r3,r3, r5 ;TURN FIRST VALUE INTO INT
+	ADD R2,r2,r3
+	BRNZP restart2
+
+
+multiply2
+	add r1,r1,r2
+	add r7,r7,#-1
+	ADD R0,r7,X0
+	brp multiply2
+
+	add r7,r7,#10 ;resetMultiplier
+	add r2,r1,x0
+	and r1,r1,x0
+	brnzp continue2
+	
+
+	add r2,r2,#-5
+
+
+theend2
+	st r2,inputInt1
+
+	
+	ld r4,inputInt1
+	LD r7, changevalue
+	add r4,r4,r7
+	
+
+
+
+
+
+
+
+
+
+
+
+and r0,r1,x0
+and r1,r1,x0
+and r2,r1,x0
+and r3,r1,x0
+and r4,r1,x0
+and r5,r1,x0
+and r6,r1,x0
+and r7,r1,x0
+
+
+;----------------------------------------
+;Convert second input into integar
+;-----------------------------------------
+
+	
+	LD r5,ASCIITOINT
+	LD r6, INTTOASCII
+
+	and r7,r7,x0
+	add r7,r7,#10
+
+	and r2,r2,x0 ;empty out r1 and r2
+	and r1,r1,x0 ;empty out r1 and r2
+	lea r4,inputString2 ;getFirstValue
+restart3
+	ldr r3,r4,x0
+	brz theend3
+	add r4,r4,#1	
+	brnzp multiply3
+
+continue3
+	
+	add r3,r3, r5 ;TURN FIRST VALUE INTO INT
+	ADD R2,r2,r3
+	BRNZP restart3
+
+
+multiply3
+	add r1,r1,r2
+	add r7,r7,#-1
+	ADD R0,r7,X0
+	brp multiply3
+
+	add r7,r7,#10 ;resetMultiplier
+	add r2,r1,x0
+	and r1,r1,x0
+	brnzp continue3
+	
+
+	add r2,r2,#-5
+
+
+theend3
+	st r2,inputInt2
+
+	
+	ld r4,inputInt2
+	LD r7, changevalue
+	add r4,r4,r7
+
+
+
+;----------------------------------------
+;Preform calculation and store result
+;-----------------------------------------
+
+
+
+LD r1,inputInt1
+ld r2,inputInt2
+ld r4,userFunction
+
+ld r3, negAdd
+add r0,r3,r4
+brz add5
+
+ld r3, negSub
+add r0,r3,r4
+brz subtract5
+
+ld r3, negMult
+add r0,r3,r4
+brz multiply5
+
+
+lea r0 failure
+puts
+brnzp outPut5
+
+add5
+add r3,r1,r2
+st r3, resultInt
+brnzp outPut5
+
+
+subtract5
+not r2,r2
+add r2,r2,#1
+add r3,r2,r1
+st r3, resultInt
+brnzp outPut5
+
+multiply5
+LD r1,inputInt1
+ld r2,inputInt2
+and r3,r3,x0
+
+multiply5Adv
+add r3,r3,r2
+add r1,r1,#-1
+brp multiply5Adv
+st r3,resultInt
+brnzp outPut5
+
+add r3,r1,r2
+st r3,resultInt
+
+
+
+
+
+outPut5
+
+
+and r0,r1,x0
+and r1,r1,x0
+and r2,r1,x0
+and r3,r1,x0
+and r4,r1,x0
+and r5,r1,x0
+and r6,r1,x0
+and r7,r1,x0
+
+
+;----------------------------------------
+;Convert result into a string
+;----------------------------------------
+
+
+LD r1, thousand
+LD r2 resultInt
+lea r4,resultString
+ld r6, INTTOASCII
+and r3,r3,x0
+
+thousands4
+add r2, r2, r1
+brn thousandsContinue4
+add r3,r3,#1
+brnzp thousands4
+
+thousandsContinue4
+ld r1, posthousand
+add r2,r2,r1
+add r0,r3,x0
+brn prehundreds4
+add r3,r3,r6
+str r3,r4,x0
+add r4,r4,#1
+
+prehundreds4
+and r3,r3,x0
+ld r1,hundred
+
+hundreds4
+add r2, r2, r1
+brn hundredssContinue4
+add r3,r3,#1
+brnzp hundreds4
+
+hundredssContinue4
+ld r1, poshundred
+add r2,r2,r1
+add r0,r3,x0
+brn pretens4
+add r3,r3,r6
+str r3,r4,x0
+add r4,r4,#1
+
+pretens4
+and r3,r3,x0
+ld r1,ten
+
+tens4
+add r2, r2, r1
+brn tensContinue4
+add r3,r3, #1
+brnzp tens4
+
+tensContinue4
+ld r1, posten
+add r2,r2,r1
+add r0,r3,x0
+brn ones4
+add r3,r3,r6
+str r3,r4,x0
+add r4,r4, #1
+
+ones4
+and r3,r3, x0
+ld r1,ten
+add r0,r2,r6
+str r0,r4,x0
+
+
+;----------------------------------------
+;Display result
+;----------------------------------------
+
+
+lea r0,resp
+puts
+
+lea r0,resultString
+puts
+
+theend8
+
+halt
+
+
+
+
+
+resp .stringz "\nYour number is: "
+char .stringz "\ncharacter: "
+
+
+thousand	.FILL #-1000
+posthousand	.fill #1000
+hundred		.fill #-100
+poshundred	.fill #100
+ten		.fill #-10
+stringValue	.blkw 100
+posten		.fill #10
+
+negAdd	.fill #-43
+negSub	.fill #-45
+negMult	.fill #-42
+
+failure	.stringz "you failed"
+
+	negplus	.fill #-43
+
+
+.end

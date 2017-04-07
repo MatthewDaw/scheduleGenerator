@@ -1,0 +1,413 @@
+/*
+-------------------
+PROGRAM EXPLANATION
+-------------------
+
+
+A tree constructor, three methods 
+to navigate the tree (in order, 
+post order, and preorder) and some 
+minor functions.
+
+
+*/
+
+
+
+
+//This program generates a balance binary tree with given input.
+
+#include "stdafx.h"
+#include <iostream>>
+#include <string>
+using namespace std;
+
+
+
+struct Node
+{
+	Node* left = NULL;
+	Node* right = NULL;
+	Node* parent = NULL;
+	int value = NULL;
+};
+struct NodeNode
+{
+	NodeNode* forward = NULL;
+	NodeNode* back = NULL;
+	Node* value = NULL;
+};
+
+class stacks
+{
+private:
+	NodeNode* top;
+public:
+	stacks();
+	void push(Node*);
+	Node* pop();
+	void readStack();
+	bool isEmpty();
+};
+bool stacks::isEmpty()
+{
+	if (top == NULL) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+void stacks::readStack()
+{
+	NodeNode* workingNode = top;
+	while (workingNode != NULL)
+	{
+		cout << workingNode->value;
+		workingNode = workingNode->back;
+	}
+	return;
+}
+
+stacks::stacks()
+{
+	top = NULL;
+}
+void stacks::push(Node* value)
+{
+	NodeNode* newNode = new NodeNode;
+	newNode->value = value;
+	if (top == NULL)
+	{
+		top = newNode;
+		return;
+	}
+	newNode->back = top;
+	top = newNode;
+}
+Node* stacks::pop()
+{
+	if (top == NULL)
+	{
+		return NULL;
+	}
+	NodeNode* temp = top;
+	Node* returnValue = top->value;
+	top = temp->back;
+	delete temp;
+	return returnValue;
+}
+
+
+class queue
+{
+private:
+	NodeNode* front;
+	NodeNode* rear;
+public:
+	queue();
+	void append(Node*);
+	Node *serve();
+	void readQueue();
+	Node* readFront();
+};
+queue::queue()
+{
+	front = NULL;
+	rear = NULL;
+};
+void queue::append(Node* value)
+{
+	NodeNode* newNode = new NodeNode;
+	newNode->value = value;
+	if  (front == NULL)
+	{
+		front = newNode;
+		return;
+	}
+	if (rear == NULL)
+	{
+		rear = newNode;
+		rear->forward = front;
+		front->back = rear;
+		return;
+	}
+	else
+	{
+		rear->back = newNode;
+		newNode->forward = rear;
+		rear = newNode;
+		return;
+	}
+}
+Node* queue::serve()
+{
+	if (front == NULL)
+	{
+		return NULL;
+	}
+	if (front == rear)
+	{
+
+		front = NULL;
+		rear = NULL;
+
+	}
+	else
+	{
+		NodeNode* temp = front;
+
+		front = temp->back;
+
+		Node *ret = temp->value;
+
+		delete temp;
+
+		return ret;
+	}
+}
+Node* queue::readFront()
+{
+	if (front == NULL)
+	{
+		return NULL;
+	}
+	else
+	{
+		return front->value;
+	}
+}
+void queue::readQueue()
+{
+	NodeNode* workingNode = front;
+	while (workingNode != NULL)
+	{
+		cout << workingNode->value->value;
+		workingNode = workingNode->back;
+	}
+	return;
+}
+//struct Node
+//{
+//	Node* left = NULL;
+//	Node* right = NULL;
+//	int value = NULL;
+//};
+//
+//
+//class tree
+//{
+//private:
+//	Node* head = NULL;
+//public:
+//	Node* addLeaf(Node*, int value);
+//	void startTraversTree(int);
+//	void traversTree();
+//};
+//void tree::startTraversTree(int value)
+//{
+//	if (head == NULL)
+//	{
+//		Node* newNode = new Node;
+//		newNode->value = value;
+//		head = newNode;
+//	}
+//	else
+//	{
+//		addLeaf(head,value);
+//	}
+//}
+////Node* tree::addLeaf(Node* start, int value)
+////{
+////
+////	if (start->left != NULL)
+////	{
+////
+////	}
+////}
+
+class tree
+{
+private: 
+	Node* head = NULL;
+	int length = NULL;
+public:
+	void ContinueAddLeaf(int, queue*);
+	void printTree();
+	void printTreeContinue(queue*);
+	void inOrderTraversal(Node*);
+	void inOrderTraversalStart();
+	void preOrderTraversal();
+};
+
+void tree::inOrderTraversalStart()
+{
+	inOrderTraversal(head);
+}
+
+void tree::inOrderTraversal(Node* start)
+{
+	if (head == NULL)
+	{
+		return;
+	}
+	if (start->left == NULL)
+	{
+		cout << start->value << " ";
+		return;
+	}
+	else 
+	{
+		inOrderTraversal(start->left);
+		cout << start->value << " ";
+	}
+	if (start->right != NULL)
+	{
+		inOrderTraversal(start->right);
+	}
+	
+	return;
+}
+
+
+void tree::preOrderTraversal()
+{
+	if (head == NULL)
+	{
+		return;
+	}
+	stacks* workingStack = new stacks;
+	Node* workingNode = new Node;
+	workingStack->push(head);
+	while (workingStack->isEmpty() == false)
+	{
+		workingNode = workingStack->pop();
+		cout << workingNode->value << " ";
+		if (workingNode->right != NULL)
+		{
+			workingStack->push(workingNode->right);
+		}
+		if (workingNode->left != NULL)
+		{
+			workingStack->push(workingNode->left);
+		}
+	}
+		
+}
+
+void tree::printTree()
+{
+	Node* node = head;
+	queue* t = new queue;
+	t->append(head);
+	printTreeContinue(t);
+}
+
+void tree::printTreeContinue(queue* queue)
+{
+	Node* workingNode = queue->readFront();
+
+	if (workingNode == NULL)
+	{
+		return;
+	}
+	else
+	{
+		cout << workingNode->value << " ";
+	}
+
+	if (workingNode->left != NULL)
+	{		
+		queue->append(workingNode->left);
+	}
+	if (workingNode->right != NULL)
+	{
+		queue->append(workingNode->right);
+	}
+		queue->serve();
+		printTreeContinue(queue);
+	
+}
+
+void tree::ContinueAddLeaf(int value, queue* queue)
+{
+	Node* workingNode = queue->readFront();	
+
+	if (head == NULL)
+	{
+		Node* newNode = new Node;
+		newNode->value = value;
+		head = newNode;
+		queue->append(head);
+		return;
+	}
+		
+	else if (workingNode->left == NULL)
+	{
+			
+		Node* newNode = new Node;
+		newNode->value = value;
+		workingNode->left = newNode;
+		newNode->parent = workingNode;		
+		return;
+	}
+	else if (workingNode->right == NULL)
+	{
+		Node* newNode = new Node;
+		newNode->value = value;			
+		workingNode->right = newNode;
+		newNode->parent = workingNode;
+		return;
+	}
+	else
+	{
+		queue->serve();
+		queue->append(workingNode->left);
+		queue->append(workingNode->right);
+		ContinueAddLeaf(value, queue);
+	}
+}
+
+void getUserInput()
+{
+	cout << "Please enter vallues you wish to insert into a binary tree. Press enter to insert and 'D' to process." << endl;
+
+	string userInput;
+	tree tree;
+	queue* s = new queue;
+
+	for (;;)
+	{
+		cin >> userInput;
+		if (userInput == "D")
+		{
+			break;
+		}
+		tree.ContinueAddLeaf(stoi(userInput), s);
+	}
+
+	cout << endl << "This is your tree with level order traversal" << endl;
+	tree.printTree();
+
+
+	cout << endl << "This is your tree with in order traversal" << endl;
+
+	tree.inOrderTraversalStart();
+
+
+
+	cout << endl << "This is your tree with pre-order traversal" << endl;
+	tree.preOrderTraversal();
+
+}
+
+
+int main()
+{
+	getUserInput();
+	
+	
+	system("pause");
+	return 0;
+}
+

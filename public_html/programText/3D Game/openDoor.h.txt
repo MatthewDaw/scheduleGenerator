@@ -1,0 +1,50 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "Components/ActorComponent.h"
+#include "openDoor.generated.h"
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnOpenRequest);
+
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+class MYPROJECT_API UopenDoor : public UActorComponent
+{
+	GENERATED_BODY()
+
+public:	
+	// Sets default values for this component's properties
+	UopenDoor();
+	void OpenDoor();
+	void CloseDoor();
+	float GetTotalMassOfPlate();
+	// Called when the game starts
+	virtual void BeginPlay() override;
+	
+	// Called every frame
+	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnOpenRequest OnOpenRequest;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnOpenRequest OnCloseRequest;
+
+
+private:
+	//UPROPERTY(EditAnywhere)
+	//float openAngle = -90.0f;
+
+	//UPROPERTY(EditAnywhere)
+	//float closeAngle = 0.0f;
+
+	UPROPERTY(EDITAnywhere)
+	ATriggerVolume* PressurePlate = nullptr;
+
+	
+
+	//UPROPERTY(EditAnywhere)
+	//float doorCloseDely = 10;
+	
+	AActor* Owner;
+};

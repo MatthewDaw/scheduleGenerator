@@ -1,0 +1,295 @@
+/*
+-------------------
+PROGRAM EXPLANATION
+-------------------
+
+
+Basically it takes an array and sort it 
+using three advanced methods: inverstion 
+sort, shell sort, and quick sort.
+
+
+*/
+
+
+
+
+#include "stdafx.h"
+#include <iostream>
+#include <vector>
+#include <time.h>
+#include <string>
+
+
+//This project will sort an array using multiple methods
+
+using namespace std;
+
+
+
+
+//print unsorted array
+void printArray(vector<int> vector)
+{
+	cout << endl;
+	for (int i = 0; i < vector.size(); i++)
+	{
+		cout << vector[i] << " ";
+	}
+	cout << endl;
+}
+
+
+//insertion sort
+void insertionSort(vector<int> vector)
+{
+	clock_t t;
+	t = clock();
+	int check = 1;
+	int value;
+	int temp;
+	int counter = 0;
+	for (int i = 1; i < vector.size(); i++)
+	{
+		
+		check = 1;
+		value = i;
+
+		
+			while ((check == 1) && (vector[value] < vector[value-1]))
+			{
+				if (value != 0) {
+					temp = vector[value];
+					vector[value] = vector[value-1];
+					vector[value-1] = temp;
+					value--;
+					counter++;
+					if (value == 0) { check = 0; }
+				}
+				else { check = 0; }
+			}
+		}
+	//t = clock() - t;
+	cout << endl << "insertion sort counter " << counter <<  endl << "time on clock: ";
+	cout << /*"It took me %d clicks (%f seconds).\n", t,*/ ((float)t) / CLOCKS_PER_SEC;
+	cout << endl;
+	printArray(vector);
+	cout << endl << endl;
+	}
+
+
+//shell sort
+void shellSort(vector<int> vector)
+{ 
+	clock_t t;
+	t = clock();
+	int counter = 0;
+	int check = 1;
+	int value;
+	int temp;
+	int k = 1;
+	int b = 1;
+	while (b < vector.size()-1) {
+		
+		while (k > 0) {
+			for (int i = k; i < vector.size(); i++)
+			{
+
+				check = 1;
+				value = i;
+
+
+				while ((check == 1) && (vector[value] < vector[value - k]))
+				{
+					if (value - k >= 0) {
+						temp = vector[value];
+						vector[value] = vector[value - k];
+						vector[value - k] = temp;
+						value = value - k;
+						counter++;
+						if (value - k <= 0) { check = 0; }
+					}
+					else { check = 0; }
+				}
+			}
+			k = floor(k / 2);
+		}
+		//printArray(vector);
+		//cout << endl << "k is " << b << " counter is " << counter << endl;
+		b = b+1;
+		k = b;
+		
+	}
+	
+	cout << endl << "shell sort counter " << counter << endl << "time on clock: ";
+	cout << ((float)t) / CLOCKS_PER_SEC;
+	cout << endl;
+	printArray(vector);
+	cout << endl << endl;
+}
+
+
+//extention of quickSort1
+void quickSort2(vector<int> &newVector,int &counter)
+{
+
+	int k = floor(newVector.size() / 2);
+	int check;
+	int value;
+	int temp;
+	while (k > 0) {
+		for (int i = k; i < newVector.size(); i++)
+		{
+
+			check = 1;
+			value = i;
+
+
+			while ((check == 1) && (newVector[value] < newVector[value - k]))
+			{
+				if (value - k >= 0) {
+					temp = newVector[value];
+					newVector[value] = newVector[value - k];
+					newVector[value - k] = temp;
+					value = value - k;
+					counter++;
+					if (value - k <= 0) { check = 0; }
+				}
+				else { check = 0; }
+			}
+		}
+		k = floor(k / 2);
+	}
+}
+
+
+//method to combine arrays (extention of quicksort 1)
+void combineArray(vector<int> &filler, vector<int> &adder)
+{
+	for (int i = 0; i < adder.size(); i++)
+	{
+		filler.push_back(adder[i]);
+	}
+}
+
+void quickSort1(vector<int> Vector)
+{
+	clock_t t;
+	t = clock();
+	vector<int> newVector;
+	vector<int> workingVector;
+	int counter = 0;
+	int vectorsize = floor(Vector.size() / 2);
+	
+		for (int i = 1; i < Vector.size(); i++)
+		{
+			if (Vector[0] > Vector[i])
+			{
+				workingVector.push_back(Vector[i]);
+				Vector.erase(Vector.begin() + i);
+				i--;
+			}
+		}
+		quickSort2(workingVector,counter);
+		workingVector.push_back(Vector[0]);
+		Vector.erase(Vector.begin());
+		combineArray(newVector, workingVector);
+		workingVector.clear();
+	
+	quickSort2(Vector,counter);
+	combineArray(newVector, Vector);
+	workingVector.clear();
+	Vector = newVector;
+	
+	cout << endl << "shell sort counter " << counter << endl << "time on clock: ";
+	cout << ((float)t) / CLOCKS_PER_SEC;
+	cout << endl;
+	printArray(Vector);
+	cout << endl << endl;
+
+
+}
+
+
+
+
+//quick swap (used in multiple sort methods)
+template<typename T>
+void swap(T &a, T &b)
+{
+	T t = a;
+	a = b;
+	b = t;
+}
+
+
+//get user input
+void getUserInput()
+{
+
+	for (;;)
+	{
+
+
+		cout << endl << "Please enter integars you would like sorted. Press 'enter' for each entry and 'D' to sort inserted elements." << endl;
+
+		string userInput;
+		vector<int> list;
+		int counter = 0;
+
+		for (;;)
+		{
+			cin >> userInput;
+			if (userInput != "D")
+			{
+				list.push_back(stoi(userInput));
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		cout << "Your list: " << endl;
+
+		printArray(list);
+
+		cout << endl << "Would you like to insertionsort, shellsort, or quicksort? (I,S, or Q)" << endl;
+		cin >> userInput;
+
+		if (userInput == "I")
+		{
+			insertionSort(list);
+		}
+		if (userInput == "S")
+		{
+			shellSort(list);
+		}
+		if (userInput == "Q")
+		{
+			quickSort1(list);
+		}
+
+
+	}
+}
+
+int main()
+{
+	getUserInput();
+	vector<int> sortingInput = { 10,6,43,5,1,21,3,1,1,3,4,34 };
+	printArray(sortingInput);
+	cout << endl << endl;
+	insertionSort(sortingInput);
+	shellSort(sortingInput);
+	vector<int> sortingInput3 = { 10,6,43,5,1,21,3,1,1,3,4,34 };
+	quickSort1(sortingInput3);
+	
+
+	
+	
+
+	system("pause");
+    return 0;
+}
+

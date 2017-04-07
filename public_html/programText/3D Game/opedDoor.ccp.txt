@@ -1,0 +1,93 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#include "MyProject.h"
+#include "openDoor.h"
+
+#define OUT
+
+
+// Sets default values for this component's properties
+UopenDoor::UopenDoor()
+{
+	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
+	// off to improve performance if you don't need them.
+	bWantsBeginPlay = true;
+	PrimaryComponentTick.bCanEverTick = true;
+	
+	// ...
+}
+
+
+// Called when the game starts
+void UopenDoor::BeginPlay()
+{
+	Super::BeginPlay();
+
+	Owner = GetOwner();
+}
+
+void UopenDoor::OpenDoor()
+{
+
+	//Owner->SetActorRotation(FRotator(0.0f, openAngle, 0.0f));
+	OnOpenRequest.Broadcast();
+	// ...
+}
+
+void UopenDoor::CloseDoor()
+{
+	//Owner->SetActorRotation(FRotator(0.0f, closeAngle, 0.0f));
+}
+
+
+// Called every frame
+void UopenDoor::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
+{
+	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
+	//Poll the trigger Volume
+	if (GetTotalMassOfPlate() > 50.0f)
+		//If the actor that opens is in the volume
+	{
+		OnOpenRequest.Broadcast();
+		//lastDoorOpenTime = GetWorld()->GetTimeSeconds();
+	}
+	else
+	{
+		//close door
+		OnCloseRequest.Broadcast();
+	}
+	//if (GetWorld()->GetTimeSeconds() - lastDoorOpenTime > doorCloseDely)
+	//{
+	//	CloseDoor();
+	//}
+
+}
+
+float UopenDoor::GetTotalMassOfPlate()
+{
+	float totalMass = 0.0f;
+
+	//Find all overlapping actors
+
+	if (PressurePlate == nullptr) 
+	{
+	
+	UE_LOG(LogTemp, Error, TEXT("Pressure plate missing"));
+	return 0.0;
+
+
+	}
+	else
+	{
+		TArray<AActor*>OverlappingActors;
+		PressurePlate->GetOverlappingActors(OUT OverlappingActors);
+
+		//interate trhough them
+		for (auto& Actor : OverlappingActors)
+		{
+			totalMass += Actor->FindComponentByClass<UPrimitiveComponent>()->GetMass();
+			UE_LOG(LogTemp, Warning, TEXT("%s on pressure plate"), *Actor->GetName());
+		}
+		return totalMass;
+	}
+}

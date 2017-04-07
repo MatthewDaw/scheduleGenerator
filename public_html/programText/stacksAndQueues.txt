@@ -1,0 +1,172 @@
+/*
+-------------------
+PROGRAM EXPLANATION
+-------------------
+
+
+All the methods involved with stacks and queues.
+
+
+*/
+
+
+
+
+#include "stdafx.h"
+#include <iostream>
+
+using namespace std;
+
+struct Node
+{
+	Node* left = NULL;
+	Node* right = NULL;
+	int value = NULL;
+};
+
+class stacks
+{
+private:
+	Node* top;
+public:
+	stacks();
+	void push(int);
+	int pop();
+	void readStack();
+};
+void stacks::readStack()
+{
+	Node* workingNode = top;
+	while (workingNode != NULL)
+	{
+		cout << workingNode->value << endl;
+		workingNode = workingNode->left;
+	}
+	return;
+}
+
+stacks::stacks()
+{
+	top = NULL;
+}
+void stacks::push(int value)
+{
+	Node* newNode = new Node;
+	newNode->value = value;
+	if (top == NULL)
+	{
+		top = newNode;
+		return;
+	}
+	newNode->left = top;
+	top = newNode;
+}
+int stacks::pop()
+{
+	if (top == NULL)
+	{
+		return NULL;
+	}
+	Node* temp = top;
+	int returnValue = top->value;
+	top = temp->left;
+	delete temp;
+	return returnValue;
+}
+
+
+
+
+class queue
+{
+private:
+	Node* front;
+	Node* rear;
+public:
+	queue();
+	void append(int);
+	int serve();
+	void readQueue();
+};
+queue::queue()
+{
+	front = NULL;
+	rear = NULL;
+};
+void queue::append(int value)
+{
+	Node* newNode = new Node;
+	newNode->value = value;
+	if (rear == NULL)
+	{
+		rear = newNode;
+		front = newNode;
+		return;
+	}
+	else
+	{
+		rear->left = newNode;
+		newNode->right = rear;
+		rear = newNode;
+		return;
+	}
+}
+int queue::serve()
+{
+	if (front == NULL)
+	{
+		return NULL;
+	}
+	Node* temp = front;
+	int returnValue = front->value;
+	front = temp->left;
+	delete temp;
+	return returnValue;
+}
+void queue::readQueue()
+{
+	Node* workingNode = front;
+	while (workingNode != NULL)
+	{
+		cout << workingNode->value;
+		workingNode = workingNode->left;
+	}
+	return;
+}
+
+
+
+
+
+int main()
+{
+	stacks stack;
+	stack.push(9);
+	stack.push(9);
+	stack.push(9);
+	stack.pop();
+	cout << "Stack content" << endl;
+	stack.readStack();
+	cout << endl << endl;
+
+
+	cout << "Queue content" << endl;
+
+	queue hi;
+	hi.append(0);
+	hi.append(1);
+	hi.append(2);
+	cout<<hi.serve()<<endl;
+	cout << hi.serve() << endl;
+	cout << hi.serve() << endl <<endl<<endl;
+
+	
+	hi.readQueue();
+
+
+	cout << endl << endl;
+	system("pause");
+
+    return 0;
+}
+

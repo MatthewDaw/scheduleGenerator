@@ -1,0 +1,44 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "Components/ActorComponent.h"
+#include "grabber.generated.h"
+
+
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+class MYPROJECT_API Ugrabber : public UActorComponent
+{
+	GENERATED_BODY()
+
+public:	
+	// Sets default values for this component's properties
+	Ugrabber();
+
+	// Called when the game starts
+	virtual void BeginPlay() override;
+	
+	// Called every frame
+	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
+	
+	
+
+
+private:
+	//How far ahead of the player we can reach in cm
+	float reach = 100.f;
+	UPhysicsHandleComponent* PhysicsHandle = nullptr;
+
+	UInputComponent* InputComponent = nullptr;
+
+
+	void Grab();
+	void Releases();
+	void findPhysicsHandleComponent();
+	void setUpInputComponent();
+	FVector getReachLinEnd();
+	FVector getReachLinStart();
+
+	//return hit for first physics body in reach
+	const FHitResult GetFirstPhysicsBodyInReach();
+};

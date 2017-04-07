@@ -1,0 +1,14 @@
+My name is Matthew Daw. I was born in Orem Utah. I've developed a deep appreciation for 
+computers through study in UVU computer programming classes along with other 
+computer-related classes such Engineering Design and a digital media class. From my 
+study, I know C#, C++, machine language (LC3), Javascript, PHP, HTML, CSS, and I am 
+familiar with Java. I also know some advanced techniques involving data structures 
+such as linked lists, trees, and graphs, as well as "Unreal" editor and Git. Outside 
+of coding, I am comfortable with Solid-works, Photoshop, and Adobe Audition, 
+Illustrator, and Premier. 
+
+To show my competency, I've tested out of two UVU CS classes, written advanced programs, 
+earned UVU credit for EGDT 1071 (Technical Design), and I will soon have UVU credit for 
+DGM 1110 (Intro to Digital Media) and received multiple programming certificates. 
+
+To see more information about my experiences, please visit my webpage.

@@ -1,0 +1,498 @@
+/*
+-------------------
+PROGRAM EXPLANATION
+-------------------
+
+This program is designed to take in a set of flight connections, a sourse,
+and desired destination. With that information, it will then calculate all 
+of the possible ways to reach that sourse and that destination using only 
+the inputed routes.
+
+
+Limitations: the user can use single character letters to represent air ports. As such, there can only
+be 26 possible air ports for the user to work with.
+
+
+*/
+
+
+
+// ConsoleApplication8.cpp : Defines the entry point for the console application.
+//
+
+
+
+#include "stdafx.h"
+#include <iostream>
+#include <string>
+#include <vector>
+#include <time.h>
+
+using namespace std;
+
+
+
+//set up constants
+const int falseReturnValue = -999;
+const int sizeofGraph = 26;
+const int sizeOfAlphabet = 26;
+
+
+
+
+//set up data structures
+
+class Conectors
+{
+public:
+	int charValue1S;
+	int charValue2S;
+	int charValue3S;
+	int charValue1D;
+	int charValue2D;
+	int charValue3D;
+	int travel;
+	double cost;
+	int source;
+	int destination;
+
+
+};
+class route
+{
+public:
+	vector<int> placesCovered;
+	vector<Conectors> connections;
+	bool clearToDelete = false;
+};
+
+int getHashValue(string a)
+{
+	int returnValue = 0;
+
+	for (int i = 0; i < a.length(); i++)
+	{
+		returnValue = returnValue * sizeOfAlphabet;
+		char x = a.at(i);
+		returnValue = returnValue + int(x) - 64;
+	}
+	return returnValue - 1;
+}
+int getSimpleHashValue(char a)
+{
+	if (int(a) > 0)
+	{
+		return int(a);
+	}
+}
+string reverseHash(Conectors a)
+{
+	string returnString;
+	returnString.push_back(static_cast<char>(a.charValue1S));
+	if ((a.charValue2S > NULL) && (a.charValue2S > 0))
+	{
+		returnString.push_back(static_cast<char>(a.charValue2S));
+	}
+	if ((a.charValue3S != NULL) && (a.charValue3S > 0))
+	{
+		returnString.push_back(static_cast<char>(a.charValue3S));
+	}
+	returnString += " to ";
+	returnString.push_back(static_cast<char>(a.charValue1D));
+	if ((a.charValue2D != NULL) && (a.charValue2D > 0))
+	{
+		returnString.push_back(static_cast<char>(a.charValue2D));
+	}
+	if ((a.charValue3D != NULL) && (a.charValue3S > 0))
+	{
+		returnString.push_back(static_cast<char>(a.charValue3D));
+	}
+	return returnString;
+}
+
+
+
+
+//Inserts route into graph
+void insertRoute(Conectors graph[sizeofGraph][sizeofGraph], string start, string destination, int travel, double cost)
+{
+	int intStart = getHashValue(start);
+	int intDestination = getHashValue(destination);
+
+	Conectors newConector;
+
+	newConector.charValue1S = getSimpleHashValue(start.at(0));
+
+	if (start.size() == 3)
+	{
+		newConector.charValue2S = getSimpleHashValue(start.at(1));
+		newConector.charValue3S = getSimpleHashValue(start.at(2));
+	}
+	else if (start.size() == 2)
+	{
+		newConector.charValue2S = getSimpleHashValue(start.at(1));
+	}
+
+
+
+
+
+	newConector.charValue1D = getSimpleHashValue(destination.at(0));
+
+	if (destination.size() == 3)
+	{
+		newConector.charValue2D = getSimpleHashValue(destination.at(1));
+		newConector.charValue3D = getSimpleHashValue(destination.at(2));
+	}
+	else if (destination.size() == 2)
+	{
+		newConector.charValue2D = getSimpleHashValue(destination.at(1));
+	}
+
+
+	newConector.travel = travel;
+	newConector.source = intStart;
+	newConector.cost = cost;
+	newConector.destination = intDestination;
+	graph[intStart][intDestination] = newConector;
+}
+
+
+
+
+//used in the maproute function to check if a connection has already been used before adding it to a route
+bool checkVisitedIndexes(vector<int> visitedIndexes, Conectors graph[sizeofGraph][sizeofGraph], int checkValue)
+{
+	for (int i = 0; i < visitedIndexes.size(); i++)
+	{
+		if (visitedIndexes.at(i) == checkValue)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+
+
+
+//checks to see if air port has certain route
+Conectors findConnection(Conectors graph[sizeofGraph][sizeofGraph], int row, int connectedNumber)
+{
+	int checkValue = 1;
+	int i = 0;
+	int a = connectedNumber;
+
+	for (int i = 0; i < sizeofGraph; i++)
+	{
+		if ((graph[row][i]).cost != -1)
+		{
+			if (checkValue == a)
+			{
+				return graph[row][i];
+			}
+
+			a--;
+
+		}
+	}
+	Conectors falseReturn;
+	falseReturn.cost = falseReturnValue;
+	return falseReturn;
+}
+
+
+
+//checks to see if airport connection has a connection to a certain airport
+int findConnectionDestination(Conectors graph[sizeofGraph][sizeofGraph], int row, int connectedNumber)
+{
+	int checkValue = 1;
+	int i = 0;
+	int a = connectedNumber;
+
+	for (int i = 0; i < sizeofGraph; i++)
+	{
+		if ((graph[row][i]).cost != -1)
+		{
+			if (checkValue == a)
+			{
+				return graph[row][i].destination;
+			}
+
+			a--;
+
+		}
+	}
+	Conectors falseReturn2;
+	falseReturn2.cost = falseReturnValue;
+	return -999;
+}
+
+
+//copies route
+route copyRoute(route Old)
+{
+	route New;
+	for (int i = 0; i < Old.connections.size(); i++)
+	{
+		New.connections.push_back(Old.connections[i]);
+	}
+	for (int i = 0; i < Old.placesCovered.size(); i++)
+	{
+		New.placesCovered.push_back(Old.placesCovered[i]);
+	}
+	return New;
+}
+
+
+
+
+//finds possible routes from desired sourse to destination
+vector<route> mapRoutes(Conectors graph[sizeofGraph][sizeofGraph], string stringSource, string stringDestination)
+{
+	int source = getHashValue(stringSource);
+	int destination = getHashValue(stringDestination);
+	vector<route> possibleRoutes;
+	vector<route> completedRoutes;
+	vector<int> placesCovered;
+	Conectors workingConnector;
+	int extention = 1;
+
+	if ((possibleRoutes.size() == 0))
+	{
+		while ((findConnection(graph, source, extention).cost) != falseReturnValue)
+		{
+			workingConnector = findConnection(graph, source, extention);
+			route newRoute;
+			newRoute.placesCovered.push_back(workingConnector.source);
+			newRoute.placesCovered.push_back(workingConnector.destination);
+			newRoute.connections.push_back(workingConnector);
+			if (workingConnector.destination == destination)
+			{
+				completedRoutes.push_back(newRoute);
+			}
+			else
+			{
+				possibleRoutes.push_back(newRoute);
+			}
+			extention++;
+		}
+		extention = 1;
+	}
+
+
+	if (possibleRoutes.size() == 0)
+	{
+		return completedRoutes;
+	}
+	int source3 = 0;
+	route workingRoute;
+	for (;;)
+	{
+		workingRoute = possibleRoutes.front();
+
+		source3 = workingRoute.connections.back().destination;
+
+		bool goodToKeep = false;
+		bool goodToContinue = true;
+		if (extention == 1)
+		{
+
+
+			while (((findConnection(graph, source3, extention).cost) != falseReturnValue) && (goodToContinue == true))
+			{
+				if ((findConnectionDestination(graph, source3, extention) == destination))
+				{
+					possibleRoutes.front().connections.push_back(findConnection(graph, source3, extention));
+					completedRoutes.push_back(possibleRoutes.front());
+					goodToContinue = false;
+				}
+				else
+				{
+					if (checkVisitedIndexes(workingRoute.placesCovered, graph, (findConnection(graph, source3, extention).destination)))
+					{
+
+						possibleRoutes.front().connections.push_back(findConnection(graph, source3, extention));
+						possibleRoutes.front().placesCovered.push_back(findConnection(graph, source3, extention).destination);
+						goodToContinue = false;
+						goodToKeep = true;
+					}
+				}
+				extention++;
+			}
+			extention = 2;
+		}
+
+		if (goodToContinue == true)
+		{
+			possibleRoutes.erase(possibleRoutes.begin());
+			if (possibleRoutes.size() == 0)
+			{
+				return completedRoutes;
+			}
+			extention = 1;
+			continue;
+		}
+
+
+
+		while (((findConnection(graph, source, extention).cost) != falseReturnValue))
+		{
+			if ((checkVisitedIndexes(workingRoute.placesCovered, graph, (findConnection(graph, source, extention).destination))))
+			{
+				route newRoute = copyRoute(workingRoute);
+				newRoute.connections.push_back((findConnection(graph, source, extention)));
+				workingRoute = newRoute;
+			}
+			extention++;
+		}
+
+		if (goodToKeep == true)
+		{
+			extention = 1;
+			continue;
+		}
+		else
+		{
+			possibleRoutes.erase(possibleRoutes.begin());
+		}
+		if (possibleRoutes.size() != 0)
+		{
+			extention = 1;
+			continue;
+		}
+		else
+		{
+			return completedRoutes;
+		}
+
+
+
+	}
+}
+
+
+//clear graph
+void emptyGraph(Conectors graph[sizeofGraph][sizeofGraph])
+{
+	for (int j = 0; j < sizeofGraph; j++)
+	{
+		for (int i = 0; i < sizeofGraph; i++)
+		{
+			(graph[j][i]).cost = -1;
+			(graph[j][i]).travel = -1;
+		}
+	}
+
+}
+
+
+//display
+void display(vector<route> &v)
+{
+	cout << endl << "Your possible routes are: " << endl;
+
+	for (int i = 0; i < v.size(); i++)
+	{
+		int a = i + 1;
+		int totalDistance = 0;
+		double totalCost = 0;
+		cout << endl << "route " << a << ": ";
+		for (int j = 0; j < v[i].connections.size(); j++)
+		{
+
+
+			cout << reverseHash(v[i].connections[j]) << " ";
+			totalDistance = totalDistance + v[i].connections[j].travel;
+			totalCost = totalCost + v[i].connections[j].cost;
+		}
+		cout << endl << "total distance for route " << a << " is " << totalDistance << " miles";
+		cout << endl << "total cost for route " << a << " is $" << totalCost << " dollars" << endl;
+	}
+	cout << "\n" << endl;
+}
+
+
+void getUserInput()
+{
+
+	//declair all variables
+	string userInput;
+	string routeSourse;
+	string routeDestination;
+	int routeDistance;
+	double routeCost;
+	string tripSourse;
+	string tripDesination;
+	Conectors graph[sizeofGraph][sizeofGraph];
+	emptyGraph(graph);
+
+
+	//get user input
+	for (;;)
+	{
+		cout << "Would you like to use (p)reset routes or enter your (o)wn? (P or O)" << endl;
+
+
+		cin >> userInput;
+		if (userInput == "O")
+		{
+			for (;;) {
+				cout << endl << "Please enter possible route sourse (single upercase character)" << endl;
+				cin >> routeSourse;
+
+				cout << endl << "Please enter possible route destination (single upercase character)" << endl;
+				cin >> routeDestination;
+
+				cout << endl << "Please enter length of route in miles (round to nearest mile)" << endl;
+				cin >> tripSourse;
+				routeDistance = stoi(tripSourse);
+
+				cout << endl << "Please enter please enter cost of route (disregard '$' sign)" << endl;
+				cin >> tripSourse;
+				routeCost = stod(tripSourse);
+
+				insertRoute(graph, routeSourse, routeDestination, routeDistance, routeCost);
+
+				cout << endl << "Would you like to enter another route? ('Y' or 'N')" << endl;
+				cin >> userInput;
+
+				if (userInput == "Y")
+				{
+					continue;
+				}
+				else
+				{
+					break;
+				}
+			}
+			cout << endl << "Please enter trip sourse (single upercase character)" << endl;
+			cin >> tripSourse;
+
+			cout << endl << "Please enter trip destination (single upercase character)" << endl;
+			cin >> tripDesination;
+
+			vector<route> hi = mapRoutes(graph, tripSourse, tripDesination);
+			display(hi);
+		}
+		if (userInput == "P")
+		{
+			insertRoute(graph, "A", "B", 4, 1.54);
+			insertRoute(graph, "B", "C", 4, 2);
+			insertRoute(graph, "C", "D", 4, 24.25);
+			insertRoute(graph, "D", "Z", 4, 24);
+			vector<route> hi = mapRoutes(graph, "A", "Z");
+			display(hi);
+		}
+		continue;
+	}
+}
+
+int main()
+{
+
+	getUserInput();
+
+	system("pause");
+	return 0;
+}

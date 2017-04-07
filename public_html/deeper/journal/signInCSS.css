@@ -1,0 +1,70 @@
+
+
+.form-control
+{
+    width: 500px;
+    padding:20px;
+    margin-top:10px;
+    margin-bottom:10px;
+    text-align:center;
+          width: 500px ;
+  margin-left: auto ;
+  margin-right: auto ;
+}
+
+h1
+{
+    font-size:40px;
+}
+
+#journal
+{
+    height:1000px;
+    width:100%;
+    text-align:left;
+}
+
+#content
+{
+    margin-top:30px;
+    text-align:center;
+}
+
+html { 
+  background: url(../../images/journalImage.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+body
+{
+    background:none;
+    color:white;
+}
+
+#signUp
+{
+    display:none;
+}
+
+.toggleStyle
+{
+    background-color:white;
+        width:200px;
+    height:20p;
+    margin:10px;
+    border-radius:5px;
+      margin-left: auto ;
+  margin-right: auto ;    
+}
+p
+{
+    font-weight:bold;
+}
+
+#logginHeader
+{
+    margin-bottom:50px;
+}

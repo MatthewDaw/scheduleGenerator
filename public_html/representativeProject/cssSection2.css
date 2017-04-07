@@ -1,0 +1,288 @@
+#body
+{
+    background-color:#e1e4e5;
+}
+
+p
+{
+    margin:0px;
+    padding:0px;
+}
+
+
+
+
+#pageTitle
+{
+    position:absolute;
+    left:0px;
+    top:0px;
+    height: 4240;
+    width: 1440;
+     background-color:#e1e4e5;    
+}
+
+#pageHead
+{
+    position:relative;
+
+    
+    height:120px;
+    width:100%;
+    text-decoration:underline;
+    
+}
+
+.stateSeal
+{
+    height:119px;
+    width:119px;
+}
+
+#text-title
+{
+    
+    font-weight: bold;
+    font-size: 200%;
+    text-align:center;
+    position:relative;
+    bottom:55px;
+    left:15px;
+
+}
+
+#content
+{
+    position:relative;
+    top:20px;
+    left:40px;
+    height:4030px;
+    width:1360px;
+    background-color:#FFFFFF;
+    padding-top:20px;
+}
+
+#side-bar
+{
+    position:relative;
+    top:0px;
+    left:0px;
+    height: 100%;
+    width:120px;
+    
+    padding-left:5px;
+    padding-right:5px;
+    padding-top:20px;
+    
+    border-right: 1px #d2d8da solid;
+    
+    
+}
+
+
+.button {
+    background-color: white;
+    border: none;
+    color: black;
+    height:50px;
+    width:100px;
+    text-align: center;
+    
+    display: inline-block;
+    
+    font-weight:bold;
+    font-size:12px;
+    
+  
+
+    border-bottom: 1px #d2d8da solid;
+}
+.button:hover
+{
+    background-color:#c52f27;
+    color:white;
+    border-bottom-right-radius:10px;
+    border-bottom-left-radius:10px;
+}
+
+
+
+
+
+#person-Box
+{
+    
+    float:left;
+   
+    padding:0px;
+    position:relative;
+    top:-125px;
+    left:150px;
+    height:230px;
+    width:180px;
+    background-color:#B8BABA;
+    border-radius:10px;
+    border: 2px #d2d8da solid;
+    margin:10px;
+   
+    font-size:15px;
+    text-align:center;
+}
+
+.person-Box
+{
+    
+    float:left;
+   
+    padding:0px;
+    position:relative;
+    top:-125px;
+    left:150px;
+    height:230px;
+    width:180px;
+    background-color:#B8BABA;
+    border-radius:10px;
+    border: 2px #d2d8da solid;
+    margin:10px;
+   
+    font-size:15px;
+    text-align:center;
+}
+
+
+.person-Picture
+{
+    margin-top:-10px;
+    height:120px;
+    width:120px;
+
+    border-radius: 50%;
+}
+
+#personName
+{
+    color:black;
+    text-align:center;
+    height:70px;
+    width:180px;
+    padding:0px;
+    
+}
+
+#legislator-name-text
+{
+    font-weight:bold;
+    text-align:center;
+    margin:2px;
+    margin-bottom:10px;
+}
+
+.legislator-name-text
+{
+    font-weight:bold;
+    text-align:center;
+    margin:2px;
+}
+
+#legislator-district-text
+{
+    font-style:italic;
+    margin:2px;
+    
+}
+
+#myTable
+{
+    margin-left:40px;
+    margin-top:-80px;
+}
+
+
+
+.personInfoBox
+{
+    
+    float:left;
+   
+    padding:0px;
+    position:relative;
+    top:-170px;
+    left:110px;
+    height:150px;
+    width:1150px;
+    background-color:#B8BABA;
+    border-radius:10px;
+    border: 2px #000000 solid;
+    margin:10px;
+   
+    font-size:15px;
+    text-align:left;
+}
+
+#personInfoBox-Text
+{
+    float:left;
+    font-weight: bold;
+    font-size:30px;
+    margin-left:40px;
+    margin-top:25px;
+    text-decoration:underline;
+    
+}
+.personInfoBox-Text
+{
+    float:left;
+    font-weight: bold;
+    font-size:30px;
+    margin-left:40px;
+    margin-top:25px;
+    text-decoration:underline;
+    
+}
+
+#personInfoBox-picture
+{
+        margin-top:-10px;
+    height:120px;
+    width:120px;
+    border-radius: 50%;
+    float:left;
+    margin-left:20px;
+}
+
+
+.personInforBoxExtended
+{
+    float:left;
+   
+    padding:0px;
+    position:relative;
+    top:-170px;
+    left:110px;
+    height:550px;
+    width:1150px;
+    background-color:#B8BABA;
+    border-radius:10px;
+    border: 2px #000000 solid;
+    margin:10px;
+   
+    font-size:15px;
+    text-align:left;
+}
+
+
+
+.personInfoExtendedTitle
+{
+	font-style:italic;
+	text-decoration: underline;
+	padding-bottom:30px;
+}
+
+
+.personInfoExtendedTitleDetails
+{
+
+    font-weight:bold;
+	padding-bottom:30px;
+}

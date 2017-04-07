@@ -1,0 +1,44 @@
+Since my Dad is a State Legislator, he has had a large amount of experience working with 
+the the data on the Utah state government's web site. Over the years he has had to go 
+through a large amount of frustration trying to go through lobbyist related data. As it 
+is now, the data is formatted in a collection of simple spreadsheets. Being able to 
+cross examine the data enough to find any meaningful patterns can easily take a person 
+hour of searching. As a result, no one is able to say much about lobbyists with sound 
+evidence. 
+
+To solve this problem, my dad gave me the idea to I write a web page to display the data 
+in a more understandable way. If I do it right, being able to find and make conclusions 
+will be easy enough that anyone can afford to do it with minimal effort. How the website 
+will work is that it will group all data in whatever meaningful chunks I can think of. 
+Once everything is grouped up, people can easily look through those groups and finding 
+patterns suddenly becomes incredibly easy.
+
+The idea of the web-page was fairly simple, but actually making it proved to be 
+challenging. Perhaps the biggest challenge I had was learning web development. Before 
+the project, I had little to no experience with making websites. To make the website 
+as good as what I wanted I had to learn five separate programming languages. Two of 
+them were logic based languages which I had a lot of experience in. The other three 
+though were focused on creating the user interface, something that was completely new 
+to me. 
+
+To learn those languages, the only tools I had was a web-development course on Udemy, 
+Google, and a little help from my Dad. Fortunately, almost all of the program learning 
+I have done over my life has been from me self-teaching myself. As such, learning how 
+to do this kind of thing by myself was something I have had experience with.
+
+The other challenge I had in making the web-site was learning how to get and organize 
+huge amounts of data from a remote website, something I have never had experience with.
+
+Despite, my challenges though I was able to make significant progress on the project. 
+I do not know if the state government will use my web-page or not. Even if they do, I 
+will certainly never know how much of an influence it will have. However, I do know it 
+has the potential for having a significant effect and sometimes that is the best a 
+developer can hope for.
+
+When one considers how much time I had to put into learning the material, I am mostly 
+finished with the project. I most likely can complete it within the next few weeks, or 
+before semi-final judging.
+
+By the time I finish the project, I would be able to show enough competency about 
+web-development to qualify for a web-development job. I also hope to go on and 
+continue to make and publish more project as or more meaningful than my legislative project.

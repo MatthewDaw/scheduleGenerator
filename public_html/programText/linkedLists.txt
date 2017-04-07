@@ -1,0 +1,420 @@
+/*
+-------------------
+PROGRAM EXPLANATION
+-------------------
+
+
+Linked lists and all of the functions related to them.
+
+
+*/
+
+
+
+
+
+#include "stdafx.h"
+#include <iostream>
+#include <string>
+#include <fstream>
+
+using namespace std;
+
+
+struct Node
+{
+	int data;
+	Node* right = NULL;
+	Node* left = NULL;	
+};
+
+
+
+class singleLinkedList
+{
+private:
+	int length;
+	Node* head;
+	Node* tail;
+public:
+	singleLinkedList();
+	void makeEmpty();
+	bool isFull() const;
+	int getLength() const;
+	Node* getHead() { return this->head; }
+	int getHeadData() { return head->data; }
+	Node* getTail() { return this->tail; }
+	void pushBack(int item);
+	void deleteItem(int item);
+	void show();
+	~singleLinkedList();
+};
+
+int singleLinkedList::getLength() const
+{
+	return length;
+}
+singleLinkedList::singleLinkedList()
+{
+	length = 0;
+	head = NULL;
+	tail = NULL;
+}
+void singleLinkedList::pushBack(int item)
+{
+	Node* temp = new Node;
+	temp->data = item;
+	if (head == NULL)
+	{
+		head = temp;
+		tail = head;
+		length++;
+	}else{
+		tail->right = temp;
+		tail = temp;
+		tail->data = item;
+		tail->right = NULL;
+		length++;
+	}
+}
+bool singleLinkedList::isFull() const
+{
+	Node* location = head;
+
+	if (location == NULL)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+
+}
+void singleLinkedList::makeEmpty()
+{
+	Node* temp;
+	while (head != NULL)
+	{
+		temp = head;
+		head = head->right;
+		delete temp;
+	}
+	length = 0;
+}
+singleLinkedList::~singleLinkedList()
+{
+	makeEmpty();
+}
+void singleLinkedList::show()
+{
+	Node* temp = head;
+	while (temp != NULL)
+	{
+		cout << temp->data << endl;
+		temp = temp->right;
+	}
+}
+void singleLinkedList::deleteItem(int item)
+{
+
+	if (head != NULL)
+	{
+		Node* temp = head;
+		if (item == head->data)
+		{
+			head = head->right;
+			delete temp;
+			length--;
+		}
+		else {
+			while (temp->right != NULL && (!(item == (temp->right->data))))
+			{
+				temp = temp->right;
+			}
+			Node* target = temp->right;
+			if (target != NULL)
+			{
+				temp->right = target->right;
+				delete target;
+				length--;
+			}
+		}
+	}
+}
+
+
+
+class doubleLinkedList
+{
+private:
+	int length;
+	Node* head;
+	Node* tail;
+public:
+	doubleLinkedList();
+	void makeEmpty();
+	bool isFull() const;
+	int getLength() const;
+	Node* getHead() { return this->head; }
+	int getHeadData() { return head->data; }
+	Node* getTail() { return this->tail; }
+	void pushBack(int item);
+	void deleteItem(int item);
+	void show();
+	~doubleLinkedList();
+};
+
+int doubleLinkedList::getLength() const
+{
+	return length;
+}
+doubleLinkedList::doubleLinkedList()
+{
+	length = 0;
+	head = NULL;
+	tail = NULL;
+}
+void doubleLinkedList::pushBack(int item)
+{
+	Node* temp = new Node;
+	temp->data = item;
+	if (head == NULL)
+	{
+		head = temp;
+		tail = head;
+		length++;
+	}
+	else 
+	{	
+		tail->right = temp;
+		temp->left = tail;
+		tail = temp;
+		tail->data = item;
+		length++;
+	}
+}
+bool doubleLinkedList::isFull() const
+{
+	Node* location = head;
+
+	if (location == NULL)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+
+}
+void doubleLinkedList::makeEmpty()
+{
+	Node* temp;
+	while (head != NULL)
+	{
+		temp = head;
+		head = head->right;
+		delete temp;
+	}
+	length = 0;
+}
+doubleLinkedList::~doubleLinkedList()
+{
+	makeEmpty();
+}
+void doubleLinkedList::show()
+{
+	Node* temp = head;
+	while (temp != NULL)
+	{
+		cout << temp->data << endl;
+		temp = temp->right;
+	}
+	temp = tail;
+
+}
+void doubleLinkedList::deleteItem(int item)
+{
+	if (head != NULL)
+	{
+		Node* temp = head;
+		if (item == head->data)
+		{
+			head = head->right;
+			delete temp;
+			length--;
+		}
+		else {
+			while (temp->right != NULL && (!(item == (temp->right->data))))
+			{
+				temp = temp->right;
+			}
+			Node* target = temp->right;
+			if (target != NULL)
+			{
+				temp->right = target->right;
+				delete target;
+				length--;
+			}
+		}
+	}
+}
+
+void writeFile(string &filename)
+{
+	ofstream file(filename);
+	file << "1\n";
+	file << "0\n";
+	file << "0\n";
+	file << "-6\n";
+	file << "4\n";
+	file << "3\n";
+	file << "1\n";
+	file << "0\n";
+	file << "0\n";
+	file << "-6\n";
+	file << "4\n";
+	file << "3\n";
+
+
+	file.close();
+}//end writeFile()
+
+void readFile(string &filename, singleLinkedList &list)
+{	//read file and pass input into writeFib
+
+	ifstream inFile(filename);
+
+	//if (inFile.fail())
+	//{
+	//	cerr << "File did not open" << endl;
+	//	exit(1);
+	//}// fail check
+	string x = "h";
+	while (x != "") {
+		x = "";
+		inFile >> x;
+		if (x == "") {
+			break;
+		}//end if blank check
+		int y = stoi(x);
+		list.pushBack(y);
+
+	}// end while loop
+	inFile.close();
+
+} //end readFile()
+
+int findItemToPush(singleLinkedList &singleLink,int smallest)
+{
+	Node* workingNode = singleLink.getHead();
+	int returnData = 10000;
+	while (workingNode != NULL)
+	{
+		if ((smallest < workingNode->data) && workingNode->data < returnData)
+		{
+			returnData = workingNode->data;
+			
+		}
+		workingNode = workingNode->right;
+	}
+	
+	return returnData;
+}
+int findDoubles(singleLinkedList &singleLink, int checkNumber)
+{
+	int returnValue = 1;
+	Node* workingNode = singleLink.getHead();
+	
+	
+	if (workingNode == NULL)
+	{
+		return 0;
+	}
+	
+		while (workingNode->data != checkNumber)
+		{
+			workingNode = workingNode->right;
+			if (workingNode == nullptr)
+			{
+				return 0;
+			}
+
+		}
+
+
+		while (workingNode->right != NULL)
+		{
+			workingNode = workingNode->right;
+			if (workingNode->data == checkNumber)
+			{
+				returnValue++;
+			}
+		}
+
+		return returnValue;
+		
+	
+}
+
+void createDoubleLinkedListFromSingleList(singleLinkedList &singleLink, doubleLinkedList &doubleLink)
+{
+	
+	int pushing = -10000;
+	for (int i = 0; i < singleLink.getLength(); i++) {
+		pushing = findItemToPush(singleLink, pushing);
+		int doubleValue = findDoubles(singleLink, pushing);
+		for (int i = 0; i < doubleValue; i++)
+		{
+			doubleLink.pushBack(pushing);
+			
+		}
+		
+	}
+
+
+}
+
+void getUserInput()
+{
+	string userInput;
+	
+	string fileName;
+	singleLinkedList singleList;
+	doubleLinkedList doubleList;
+
+	cout << "Would you like upload a file to (p)rocess or process (e)xample file? (P or E)" << endl;
+	cin >> userInput;
+	cout << endl;
+	if (userInput == "P")
+	{
+		cout << "please type file name." << endl;
+		cin >> userInput;
+		fileName = userInput;
+	}
+	else
+	{
+		fileName = "hello.txt";
+		writeFile(fileName);
+	}
+	readFile(fileName, singleList);
+	singleList.show();
+
+
+
+	cout << endl << endl << "Turning single linked list into double and sorting data" << endl;
+	createDoubleLinkedListFromSingleList(singleList, doubleList);
+	doubleList.show();
+	cout << endl << endl << endl;
+}
+
+int main()
+{
+
+	getUserInput();	
+
+	system("pause");
+	return 0;
+}
+

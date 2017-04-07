@@ -1,0 +1,386 @@
+/*
+-------------------
+PROGRAM EXPLANATION
+-------------------
+
+
+This is mostly to practice objects, polymorphism, and inheritance. Basically, there’s a parent class “book” with a child class “ebook.” Those two classes share most (but not all) methods and have slightly different data. Yet, I’m still able to put both types of books into a book array and display all contents in the array.
+
+
+*/
+
+
+
+
+
+// cs1410project2.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include <string>
+#include <vector>
+#include <fstream>
+
+
+using namespace std;
+
+
+class author 
+{
+private:
+	string name;
+	string address;
+public:
+	author(string, string);
+	author();
+	~author();
+string getAuthorName() { return name; }
+string getAuthorAddress() { return address; }
+void setAuthorNamae(string Name) { name = Name; }
+void setAuthorAddress(string Addresss) { address = Addresss; }
+};
+
+author::author(string name, string address)
+{
+	this->name = name;
+	this->address = address;
+}
+author::author() {}
+author::~author()
+{
+	//cout << "this author was destroyed: " << this-> name;
+}
+
+
+
+
+class book
+{
+protected:
+	string p_name;
+	string p_address;
+	author p_author;
+	int p_pages;
+	double p_cost;
+	
+public:
+	//(const Point &pt0, const Point &pt1): c1(pt0), c2(pt1)
+	book(author, string, int, double);
+	book(string auth_name, string auth_address, string book_name, int pages, double cost)
+		: p_author(auth_name,auth_address)
+		, p_name(book_name)
+		, p_pages(pages)
+		, p_cost(cost)
+	{
+	}
+	book();
+	~book();
+	author getAuthor() { return p_author; }
+	string getBookName() { return p_name; }
+	string getAuthorAddress() { return p_address; }
+	double getCost() { return p_cost; }
+	int getPages() { return p_pages; }
+	void setAuthorNamae(string Name) { p_name = Name; }
+	void setAuthorAddress(string Address) { p_address = Address; }
+};
+
+book::book(author a, string name, int pages, double cost)
+	: p_author(a)
+	, p_name(name)	
+	, p_pages(pages)
+	, p_cost(cost)
+{	
+}
+
+book::book() {}
+book::~book()
+{
+	//cout << "this book was destroyed: ";
+}
+
+class audioBooks : public book
+{
+private:
+	int p_length;
+public:
+	int getLength() { return p_length; }
+	audioBooks(int length);
+	~audioBooks() {}
+
+};
+
+audioBooks::audioBooks(int length)
+{
+	this->p_length = length;
+
+};
+
+
+class eBook : public book
+{
+private:
+	string p_description;
+public:
+	string getDesciption() { return p_description; }
+	eBook(author a, string name, int pages, double cost, string description);
+	~eBook() {}
+};
+
+eBook::eBook(author a, string name, int pages, double cost, string description)
+	:book(a, name, pages, cost)
+{
+	this->p_description = description;
+}
+
+
+
+
+
+void displayBooks(vector<book> theBooks)
+{
+	cout << endl;
+	int i;
+	for (i = 0; i < theBooks.size(); i++) {
+		book myBook = theBooks.at(i);
+		author bookAuthor = myBook.getAuthor();
+		cout << myBook.getBookName() << endl;
+		cout << bookAuthor.getAuthorName() << endl;
+		cout << bookAuthor.getAuthorAddress() << endl;
+		cout << myBook.getPages() << " pages" << endl;
+		cout.precision(2);
+		cout << "$" << fixed << myBook.getCost() << endl;
+		cout << endl << endl;
+	}
+	}
+
+void displayeBook(eBook myBook)
+{
+	cout << endl;
+	
+		
+		author bookAuthor = myBook.getAuthor();
+		cout << myBook.getBookName() << endl;
+		cout << bookAuthor.getAuthorName() << endl;
+		cout << bookAuthor.getAuthorAddress() << endl;
+		cout << myBook.getPages() << " pages" << endl;
+		cout.precision(2);
+		cout << "$" << fixed << myBook.getCost() << endl;
+		cout << myBook.getDesciption() <<endl;
+		cout << endl << endl;
+	
+}
+
+void writeFile(vector<book> myBooks)
+{
+	
+	ofstream writer("CS1410Project3.txt");
+	int i;
+	for (i = 0; i < myBooks.size(); i++) {
+		book myBook = myBooks.at(0);
+		author bookAuthor = myBook.getAuthor();
+		writer << myBook.getBookName() << endl;
+		writer << bookAuthor.getAuthorName() << endl;
+		writer << bookAuthor.getAuthorAddress() << endl;
+		writer << myBook.getPages() << " pages" << endl;
+		writer.precision(2);
+		writer << fixed << myBook.getCost() << endl;
+	}
+	writer.close();
+}
+void readFile(vector<book> theBooks)
+{
+	
+	ofstream reader("CS1410Project3.txt");
+	ifstream infile;
+	infile.open("CS1410Project3.txt");
+	for (int i = 0; i < 1; i++) {
+
+		string bookname;
+		string authorname;
+		string authoraddress;
+		string workingpages;
+		string workingcost;
+
+		getline(infile, bookname);
+		getline(infile, authorname);
+		getline(infile, authoraddress);
+		getline(infile, workingpages);
+		getline(infile, workingcost);
+
+		cout << bookname << endl;
+		cout << authorname << endl;
+		cout << authoraddress << endl;
+		cout << workingpages << endl;
+		cout << workingcost << endl;
+
+		int pages = atoi(workingpages.c_str());
+		float fakecost = atof (workingcost.c_str());
+		double cost = static_cast<double>(fakecost);
+
+		//string auth_name, string auth_address, string book_name, int pages, double cost		
+		//theBooks[i] = book(authorname, authoraddress, bookname, pages, cost);
+}
+	//displayBooks(theBooks);
+	
+	
+}
+
+void getUserInput()
+{
+	for(;;){
+
+	// create a vector for storing the account objects
+	vector<book> myBooks;
+
+	//set up for user input
+	string userInput;
+
+	cout << "Would you like to (c)reate library database or (v)iew preset? (C or V)" << endl;
+	cin >> userInput;
+
+	if ((userInput == "c") || (userInput == "C"))
+	{
+		string bookType;
+		string bookName;
+		string authorName;
+		string authorAddress;
+
+		int cost;
+		int pages;
+		string fileFormat;
+
+		for (;;) {
+
+
+
+			cout << "Please enter author name" << endl;
+			cin >> authorName;
+
+			cout << "Plese enter where the author is from" << endl;
+			cin >> authorAddress;
+
+			author A1(authorName, authorAddress);
+
+			for (;;) {
+
+
+				cout << "Please enter book by that author" << endl;
+				cin >> bookName;
+
+				cout << "Please enter cost" << endl;
+				cin >> cost;
+
+				cout << "Please enter if it's an (P)aper, (E)Book or (B)oth (P, E, B)" << endl;
+				cin >> bookType;
+
+				cout << "Please enter number of pages" << endl;
+				cin >> pages;
+
+				if ((bookType == "E") || (bookType == "B"))
+				{
+					cout << "Please enter file format" << endl;
+					cin >> fileFormat;
+
+					eBook e1(A1, bookName, pages, cost, fileFormat);
+					myBooks.push_back(e1);
+
+				}
+				if (bookType != "E")
+				{
+					book p1(A1, bookName, pages, cost);
+					myBooks.push_back(p1);
+				}
+				cout << "Would you like to enter another book by that author? ('Y', 'N')" << endl;
+				cin >> userInput;
+
+				if (userInput == "Y")
+				{
+					continue;
+				}
+				else
+				{
+					break;
+				}
+			}
+			cout << "Would you like to add another book?('Y' or 'N')" << endl;
+			cin >> userInput;
+			if (userInput == "Y")
+			{
+				continue;
+			}
+			else
+			{
+				break;
+			}
+
+		}
+		cout << "Your boods are: " << endl;
+		displayBooks(myBooks);
+	}
+
+
+
+	if ((userInput == "v") || (userInput == "V"))
+	{
+
+
+
+		// create three Author objects
+		author p1("J.K.Rowling", "Edinburgh, Scotland");
+		author p2("Suzanne Collins", "Connecticut, USA");
+		author p3("J.R.R. Tolkien", "Bournmouth, England");
+
+		// Create three Book objects
+		book b1(p1, "Harry Potter and the Sorcerer's Stone", 256, 24.95);
+		book b2(p2, "Mockingjay", 400, 12.99);
+		book b3(p3, "The Hobbit", 322, 14.29);
+		book b4("Harper Lee", "Somewhere The South", "To Kill a Mockingbird", 300, 22.22);
+
+		// add the books to the vector
+		myBooks.push_back(b1);
+		myBooks.push_back(b2);
+		myBooks.push_back(b3);
+		cout << "number of books: " << myBooks.size();
+
+		// call the displayBooks function to display the books
+		//displayBooks(myBooks);
+		cout << "\n\n";
+
+		eBook e1(p1, "Harry Potter and the Sorcerer's Stone", 256, 24.95, "pdf");
+		displayeBook(e1);
+		myBooks.push_back(e1);
+
+		//writeFile(myBooks);
+		//readFile(MyBooks);
+		cout << endl << endl << endl;
+		displayBooks(myBooks);
+	}
+
+	cout << "Would you like to exit? ('Y' or 'N')" << endl;
+	cin >> userInput;
+	if (userInput == "Y")
+	{
+		break;
+	}
+	else
+	{
+		continue;
+	}
+}
+
+
+}
+
+
+int main()
+{
+	getUserInput();
+
+	system("PAUSE");
+	
+
+
+    return 0;
+}
+

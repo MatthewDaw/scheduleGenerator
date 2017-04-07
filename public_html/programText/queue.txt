@@ -1,0 +1,154 @@
+/*
+-------------------
+PROGRAM EXPLANATION
+-------------------
+
+
+Queue and all the methods involved with them.
+
+
+*/
+
+
+
+
+#include "stdafx.h"
+#include <iostream>
+using namespace std;
+
+//queues and all  of the functions involved in queues
+
+struct Node
+{
+	Node* left = NULL;
+	Node* right = NULL;
+	int value = NULL;
+};
+struct NodeNode
+{
+	NodeNode* forward = NULL;
+	NodeNode* back = NULL;
+	Node* value = NULL;
+};
+
+
+class queue
+{
+private:
+	NodeNode* front;
+	NodeNode* rear;
+public:
+	queue();
+	void append(Node*);
+	Node *serve();
+	void readQueue();
+	Node* readFront();
+};
+queue::queue()
+{
+	front = NULL;
+	rear = NULL;
+};
+void queue::append(Node* value)
+{
+	NodeNode* newNode = new NodeNode;
+	newNode->value = value;
+	if (rear == NULL)
+	{
+		rear = newNode;
+		front = newNode;
+		return;
+	}
+	else
+	{
+		rear->back = newNode;
+		newNode->forward = rear;
+		rear = newNode;
+		return;
+	}
+}
+Node* queue::serve()
+{
+	if (front == NULL)
+	{
+		return NULL;
+	}
+	else
+	{
+		NodeNode* temp = front;
+
+		front = temp->back;
+
+		Node *ret = temp->value;
+
+		delete temp;
+
+		return ret;
+	}
+}
+Node* queue::readFront()
+{
+	if (front == NULL)
+	{
+		return NULL;
+	}
+	else
+	{
+		return front->value;
+	}
+}
+void queue::readQueue()
+{
+	NodeNode* workingNode = front;
+	while (workingNode != NULL)
+	{
+		cout << workingNode->value->value;
+		workingNode = workingNode->back;
+	}
+	return;
+}
+
+int main()
+{
+	queue* yo = new queue;
+	
+	Node* hi = new Node;
+	hi->value = 1;
+	yo->append(hi);
+
+	
+	Node* hi1 = new Node;
+	hi1->value = 2;
+	hi1->left = hi;
+	yo->append(hi1);
+	
+	/*Node* hi2 = new Node;
+	hi->value = 3;
+	yo->append(hi2);
+	
+	Node* hi3 = new Node;
+	hi->value = 4;
+	yo->append(hi3);*/
+	
+	yo->serve();
+	Node* workingNode = yo->readFront();
+	if (workingNode->left == NULL)
+	{
+		cout << "failure";
+	}
+	else
+	{
+		cout << "success";
+	}
+
+	yo->append(hi);
+	yo->append(hi1);
+	//yo->append(hi2);
+	//yo->append(hi3);
+
+
+
+	system("pause");
+    return 0;
+}
+

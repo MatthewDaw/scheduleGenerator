@@ -1,0 +1,36 @@
+As a high schooler, trying to set up my class schedule is frustrating. Every year, I have 
+a list of four or five classes I really want to take. I reorganize my schedule again and 
+again to try to coordinate online classes, UVU classes, and whatever else I can do to 
+make sure I can take those classes. However, despite my best efforts, every year too 
+many of my desired classes are in conflict, and that forces me to drop two or more of 
+those classes. Every year, hundreds of Orem High students are forced into this same 
+situation. This shouldn't have to be the case. 
+
+Eventually, I found out why this happens. The answer is human imprecision in making the 
+schedule. My school's principal, who's in charge of most of the class scheduling, truly 
+does his best to create the best schedule he can. Given the size and the complexity of 
+the project, I think he does a good job. Yet in order to make the perfect schedule where 
+everyone can get the classes they want, he would have to perform algorithms dozens to 
+hundreds of times on tens of thousands of data sets. Given all of his other 
+responsibilities, it would take him more than the entire school year to work through 
+that data, which would make the schedule overdue and therefore useless. Because of that, 
+he has to generalize and make assumptions without performing calculations. That is 
+understandable human imprecision. Yet, it being understandable does little in actually 
+solving the problem. 
+
+Since the root of this problem is human inaccuracy, the solution must be something that 
+can overcome human inaccuracy: a computer.
+
+When I started to become comfortable with my programming skills, I sent an email to my 
+school's principal explaining my idea. He had me schedule an appointment and ultimately 
+said he loved the idea and that it could be a "game changer."
+
+Effectively, what I am doing is creating a way for any school to calculate the best 
+possible schedule given whatever limitations they want to put in it (such as class sizes, 
+number of teachers, and so on). I will offer the solution for free and over the course 
+of a year it could potentially save each school dozens of hours of work. I believe that 
+if my program is successful in my school, my program or a similar program will spread 
+across the country, potentially saving hundreds of thousands of man hours and allowing 
+potential millions of students to have more classes that they think can most benefit them. 
+I am not finished with this project but I have made significant progress and expect to be 
+done within a month.

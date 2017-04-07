@@ -1,0 +1,163 @@
+/*
+-------------------
+PROGRAM EXPLANATION
+-------------------
+
+This program can turn an array into a vector.
+A vector is similar to an array except that it
+can resize itself instead of having to overflow
+and cause a crash.
+
+
+*/
+
+
+//This project is my own vector class
+
+#include "stdafx.h"
+#include <string>
+#include <iostream>
+
+using namespace std;
+
+
+class myVector
+{
+private:
+	int p_size;
+	int p_capacity;
+	int* p_data;
+public:
+	myVector(int capacity);
+	myVector();
+	void pushBack(int);
+	void changeCapacity(int newCapacity);
+	int getSize() { return p_size; }
+	int getCapacity() { return this->p_capacity; }
+	int at(int n);
+	void clear();
+	void writeOutVector();
+	void showVectorStatus();
+	~myVector() {}
+};
+
+myVector::myVector(int capacity)
+{
+	
+		this->p_capacity = capacity;
+		this->p_data = new int[capacity];
+		this->p_size = 0;
+}
+int myVector::at(int n)
+{
+	int a = 1;
+	int b = 2;
+	return p_data[n];
+
+	}
+
+
+void myVector::changeCapacity(int newCapacity )
+{
+	int *Array = new int[newCapacity];
+	for (int i = 0; i < getCapacity(); i++)
+	{
+		Array[i] = p_data[i];
+	}
+	if (p_data != NULL) {
+		delete[] this->p_data;
+		p_data = NULL;
+	}
+	p_data = Array;
+	p_capacity = newCapacity;
+}
+
+void myVector::pushBack(int pushInValue)
+{
+	if (p_capacity <= p_size)
+	{
+		changeCapacity(p_size + 1);
+	}
+	
+		p_data[p_size] = pushInValue;
+		p_size++;
+	
+}
+myVector::myVector()
+{
+	this->p_size = 0;
+	this->p_capacity = 2;
+	this->p_data = new int[p_capacity];
+}
+
+void myVector::clear()
+{
+	if (this->p_data != NULL) {
+		delete[] this->p_data;
+		this->p_data = NULL;
+	}
+	this->p_capacity = 2;
+	this->p_size = 0;
+}
+
+void myVector::writeOutVector()
+{
+	for (int i = 0; i < p_size; i++)
+	{
+		cout << p_data[i] << endl;
+	}
+}
+
+void myVector::showVectorStatus()
+{
+	cout << endl << "Vector status: " << endl;
+	cout << "Vector's size: " << this->p_size << endl;
+	cout << "Vector's capacity: " << this->p_capacity << endl;
+	cout << "vector's content's: " << endl;
+	writeOutVector();
+}
+
+void getUserInput()
+{
+
+
+	for (;;)
+	{
+		myVector vector;
+		vector.showVectorStatus();
+		cout << endl << "Please enter integars you would like sorted. Press 'enter' for each entry and 'D' to sort inserted elements." << endl;
+
+		string userInput;
+		
+		int counter = 0;
+
+		
+
+		for (;;)
+		{
+			cin >> userInput;
+			if (userInput != "D")
+			{
+				vector.pushBack(stoi(userInput));
+			}
+			else
+			{
+				break;
+			}
+		}
+		vector.showVectorStatus();
+		cout << endl << "Reset" << endl;
+	}
+}
+
+
+
+
+int main()
+{
+	getUserInput();
+
+	system("pause");
+    return 0;
+}
+

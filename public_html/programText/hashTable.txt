@@ -1,0 +1,113 @@
+/*
+-------------------
+PROGRAM EXPLANATION
+-------------------
+
+This program just generates a simple hash table. The great things about this is that even if you enter two values that should go into the same element the program can still find a place to put the overflow element. 
+
+
+*/
+
+
+
+
+#include "stdafx.h"
+#include <iostream>
+
+
+class hash
+{
+private:
+	const int sizeOfArray = 21;
+	const int emptyNumber = -99;
+	int hashArray[20];
+
+public:
+	hash();
+	bool resolveCollision(int, int);
+	int getHashValue(int);
+	bool insert(int, int);
+	void show();
+};
+
+hash::hash()
+{
+	for (int i = 0; i < sizeOfArray; i++)
+	{
+		hashArray[i] = emptyNumber;
+	}
+}
+//insert(value, location)
+// getHashValue(value);  
+int hash::getHashValue(int input)
+{
+	int returnValue;
+	returnValue = input % 20;
+	insert(input, returnValue);
+	return returnValue;
+}
+bool hash::insert(int value, int location)
+{
+	if (hashArray[location] != emptyNumber)
+	{
+		std::cout << "Collision detected at " << location << ", for value " << value << std::endl;
+		resolveCollision(value, location);
+		return false;
+	}
+	else
+	{
+		hashArray[location] = value;
+		return true;
+	}
+}
+bool hash::resolveCollision(int value, int originalPlacement)
+{
+	for (int i = originalPlacement; i < sizeOfArray; i++)
+	{
+		if (hashArray[i] == emptyNumber)
+		{
+			hashArray[i] = value;
+			return true;
+		}
+	}
+	for (int i = originalPlacement; i < sizeOfArray; i--)
+	{
+		if (hashArray[i] == emptyNumber)
+		{
+			hashArray[i] = value;
+			return true;
+		}
+	}
+	return false;
+}
+void hash::show()
+{
+	std::cout << std::endl << "HASH TABLE contents		" <<  "Element Value" << std::endl;
+	for (int i = 0; i < sizeOfArray; i++)
+	{
+		if (hashArray[i] == emptyNumber)
+		{
+			std::cout << i << "				" << "empty" << std::endl;
+		}
+		else
+		{
+			std::cout << i << "				" << hashArray[i] << std::endl;
+		}
+	}
+}
+
+int main()
+{
+	hash* newHash = new hash;
+	newHash->getHashValue(21);
+	newHash->getHashValue(22);
+	newHash->getHashValue(23);
+	newHash->getHashValue(25);
+	newHash->getHashValue(25);
+	newHash->show();
+
+	system("pause");
+	return 0;
+}
+
+
